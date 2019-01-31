@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <meta charset="utf8" />
+    <script src="dist/vue.js"></script>
+    <script src="dist/vue-router.js"></script>
+    <script src="dist/vuex.min.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <button @click="sortByName">sortByName</button> <button @click="sortByAge">sortByAge</button>
+      <ol>
+        <li v-for="users,country in userList">
+          {{ country }}
+          <ol>
+            <li v-for="user in users">{{ user.name }}&nbsp;{{ user.age }}</li>
+          </ol>
+        </li>
+      </ol>
+    </div>
+  </body>
+  <script>
+    new Vue({
+      el: "#app",
+      data: {
+        userList: { 魏国: [{ name: "许褚", age: 234 }, { name: "曹彰", age: 34 }, { name: "典韦", age: 345 }], 蜀国: [{ name: "张飞", age: 23 }, { name: "赵云", age: 26 }, { name: "关羽", age: 40 }], 吴国: [{ name: "周瑜", age: 234 }, { name: "吕蒙", age: 343 }, { name: "陆逊", age: 84 }] }
+      },
+      methods: {
+        sortByAge() {
+          for (var country in this.userList) {
+            this.userList[country].sort((a, b) => {
+              return a.age - b.age
+            })
+          }
+        },
+        sortByName() {
+          for (var country in this.userList) {
+            this.userList[country].sort((a, b) => {
+              if (a.name > b.name) return 1
+              else if (a.name < b.name) return -1
+              else return 0
+            })
+          }
+        }
+      }
+    })
+  </script>
+</html>

@@ -1,0 +1,45 @@
+<html>
+        <head>
+                <meta charset="utf8">
+              <script src="dist/vue.js"></script>
+              <script src="dist/vue-router.js"></script>
+              <script src="dist/vuex.min.js"></script>
+            </head>
+  <body>
+    <div id="app">{{ one }}</div>
+    <div id="app2"><input type="range" v-model="one" /></div>
+    <button onclick="store.commit('setOne',1)">reset</button>
+  </body>
+  <script>
+      /**
+      This is a bad case. We can control 'one' by app2. But app2 cannot change when 'one' has changed.
+      */
+    var store = new Vuex.Store({
+      state: {
+        one: 1
+      },
+      mutations: {
+        setOne(state, value) {
+          state.one = value
+        }
+      }
+    })
+    var vm1 = new Vue({
+      el: "#app",
+      computed: {
+        one: () => store.state.one
+      }
+    })
+    var vm2 = new Vue({
+      el: "#app2",
+      data: {
+        one: store.state.one
+      },
+      watch: {
+        one: function(one) {
+          store.commit("setOne", one)
+        }
+      }
+    })
+  </script>
+</html>

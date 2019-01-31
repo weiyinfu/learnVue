@@ -1,0 +1,46 @@
+<html>
+  <head>
+      <meta charset="utf8">
+    <script src="dist/vue.js"></script>
+    <script src="dist/vue-router.js"></script>
+    <script src="dist/vuex.min.js"></script>
+  </head>
+  <body>
+    <div id="app">{{ one }}</div>
+    <div id="app2"><input type="range" v-model="one" /></div>
+    <button onclick="store.commit('setOne',1)">reset</button>
+  </body>
+  <script>
+    var store = new Vuex.Store({
+      state: {
+        one: 1
+      },
+      mutations: {
+        setOne(state, value) {
+          state.one = value
+        }
+      }
+    })
+    var vm1 = new Vue({
+      el: "#app",
+      computed: {
+        one: () => store.state.one
+      }
+    })
+    var vm2 = new Vue({
+      el: "#app2",
+      //here we can know why computed need set function
+      computed: {
+        one: {
+          get() {
+            return store.state.one
+          },
+          set(newValue) {
+            console.log("setOne " + newValue)
+            store.commit("setOne", newValue)
+          }
+        }
+      }
+    })
+  </script>
+</html>

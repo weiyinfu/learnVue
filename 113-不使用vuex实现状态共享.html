@@ -1,0 +1,28 @@
+<html>
+    <head>
+        <meta charset="utf8">
+      <script src="dist/vue.js"></script>
+      <script src="dist/vue-router.js"></script>
+      <script src="dist/vuex.min.js"></script>
+    </head>
+  <body>
+    <div id="app1">{{ data.one }}+{{ data.two }}={{ data.one + data.two }}</div>
+    <div id="app2">one:<input type="range" v-model="data.one" />two： <input type="range" v-model="data.two" /></div>
+  </body>
+  <script>
+    var data = {
+      one: 1,
+      two: 2
+    }
+    var vm1 = new Vue({
+      el: "#app1",
+      data: {
+        data: data
+      }
+    })
+    var vm2 = new Vue({
+      el: "#app2",
+      data: { data: data }
+    })
+  </script>
+</html>

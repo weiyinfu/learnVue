@@ -1,0 +1,88 @@
+<html>
+  <head>
+    <meta charset="utf8" />
+    <script src="dist/vue.js"></script>
+    <script src="dist/vue-router.js"></script>
+    <script src="dist/vuex.min.js"></script>
+  </head>
+  <body>
+    <!-- 让用户输入图片的坐标 -->
+    <div id="app">
+      <my-vue v-bind:point-list="userPoints" v-bind:width="width" v-bind:height="height" v-on:input="input"></my-vue>
+      <div>{{ userPoints }}</div>
+    </div>
+    <div id="app2">
+      <my-vue v-model="userPoints" v-bind:width="width" v-bind:height="height"></my-vue>
+      <div>{{ userPoints }}</div>
+    </div>
+  </body>
+  <script type="x-template" id="mytemp">
+    <div>
+        <canvas :width="width" :height="height" style="background-color:black" v-on:click="click" ref="canva"></canvas>
+        <button v-on:click="clear">clear</button>
+    </div>
+  </script>
+  <script>
+    Vue.component("MyVue", {
+      template: "#mytemp",
+      data: () => {
+        return {
+          points: []
+        }
+      },
+      model: {
+        prob: "pointList",
+        event: "input"
+      },
+      props: ["width", "height", "pointList"],
+      methods: {
+        getContext() {
+          if (this.context) return this.context
+          var canva = this.$refs.canva
+          var g = canva.getContext("2d")
+          return g
+        },
+        clear(evt) {
+          this.points = []
+          this.$emit("input", this.points)
+          var g = this.getContext()
+          g.fillStyle = "black"
+          this.getContext().fillRect(0, 0, this.$refs.canva.width, this.$refs.canva.height)
+        },
+        click(evt) {
+          var x = evt.offsetX,
+            y = evt.offsetY
+          //执行绘制操作
+          g = this.getContext()
+          g.fillStyle = "#dd0000"
+          g.fillRect(x - 3, y - 3, 13, 13)
+
+          //向父组件发送事件
+          this.points.push({ x, y })
+          this.$emit("input", this.points)
+        }
+      }
+    })
+    new Vue({
+      el: "#app",
+      data: {
+        userPoints: [],
+        width: "200px",
+        height: "200px"
+      },
+      methods: {
+        input(newValue) {
+          this.userPoints = newValue
+        }
+      }
+    })
+    new Vue({
+      el: "#app2",
+      data: {
+        userPoints: [],
+        width: "200px",
+        height: "200px"
+      }
+    })
+  </script>
+</html>

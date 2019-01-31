@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <meta charset="utf8" />
+    <script src="dist/vue.js"></script>
+    <script src="dist/vue-router.js"></script>
+    <script src="dist/vuex.min.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <input v-bind:value="one" v-on:input.lazy="change" ref="one" /> <span>{{ one }}</span>
+
+      <input v-bind:value="two" v-on:input.lazy="changeTwo" /> <span>{{ two }}</span> <input v-bind:value="three" v-on:input="three=$event.target.value" /> <span>{{ three }}</span>
+    </div>
+  </body>
+  <script>
+    new Vue({
+      el: "#app",
+      data: {
+        one: 1,
+        two: 2,
+        three: 3
+      },
+      methods: {
+        change(evt) {
+          console.log(evt)
+          this.one = this.$refs.one.value
+        },
+        //使用event.target
+        changeTwo(evt) {
+          console.log(evt)
+          this.two = evt.target.value
+        }
+      }
+    })
+  </script>
+</html>

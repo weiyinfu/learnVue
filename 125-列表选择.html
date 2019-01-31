@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <meta charset="utf8" />
+    <script src="dist/vue.js"></script>
+  </head>
+  <body>
+    有一个列表包含三个条目，每个时刻只有一个条目是活跃的，活跃的条目显示为红色。通过全局变量store来表示当前是哪个元素出于活跃状态，使用computed属性计算当前元素的状态。这种方法的缺点在于每次刷新都会刷新全部元素，造成大量调用。
+    <h2>在计算属性中，尽量少用全局变量，否则会执行全局刷新；要想提高运行效率，局部刷新是必由之路。</h2>
+    <div id="app"><my-span :value="i" v-for="i in a" :store="store" :key="i"></my-span></div>
+  </body>
+  <script>
+    Vue.component("my-span", {
+      template: `<div @click="clk" :style="{color:color}">{{value}}</div>`,
+      props: ["value", "store"],
+      methods: {
+        clk() {
+          console.log("click")
+          this.store.now = this.value
+        }
+      },
+      computed: {
+        color() {
+          console.log(this.value + " color")
+          return this.store.now == this.value ? "red" : "black"
+        }
+      }
+    })
+    var vm = new Vue({
+      el: "#app",
+      data: {
+        a: "one two three".split(/\s+/),
+        store: { now: "one" }
+      }
+    })
+  </script>
+</html>

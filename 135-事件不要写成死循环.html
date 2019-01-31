@@ -1,0 +1,45 @@
+<html>
+  <head>
+    <meta charset="utf8" />
+    <script src="dist/vue.js"></script>
+    <style>
+      * {
+        font-size: 30px;
+        user-select: none;
+      }
+      span {
+        background: purple;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      不要让事件处理器发出触发该事件消息，否则陷入死循环 <br />
+      <span>{{count?`时间已经过去${ count }秒了`:"点击开始计时"}}</span>
+    </div>
+  </body>
+  <script>
+    new Vue({
+      el: "#app",
+      data: {
+        count: 0
+      },
+      mounted() {
+        //使用$on监听子组件发送来的消息
+        this.$on("click", this.clickHandler)
+        this.$el.addEventListener("click", () => {
+          this.$emit("click")
+        })
+      },
+      methods: {
+        clickHandler() {
+          this.count++
+          setTimeout(() => {
+            this.$emit("click")
+          }, 1000)
+        }
+      }
+    })
+  </script>
+</html>

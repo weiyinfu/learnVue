@@ -1,0 +1,45 @@
+<html>
+    <head>
+        <meta charset="utf8">
+      <script src="dist/vue.js"></script>
+      <script src="dist/vue-router.js"></script>
+      <script src="dist/vuex.min.js"></script>
+    </head>
+  <body>
+    <div id="nav"><a href="?home">home</a> <a href="?about">about</a></div>
+    <div id="app"></div>
+  </body>
+  <script>
+    const NotFound = { template: "<p>Page not found</p>" }
+    const Home = { template: "<p>home page</p>" }
+    const About = { template: "<p>about page</p>" }
+
+    const routes = {
+      "/": Home,
+      "/about": About
+    }
+
+    new Vue({
+      el: "#app",
+      data: () => {
+        return {
+          currentRoute: window.location
+        }
+      },
+      computed: {
+        ViewComponent() {
+          var route = null
+          if (this.currentRoute.search.endsWith("home")) {
+            route = "/"
+          } else if (this.currentRoute.search.endsWith("about")) {
+            route = "/about"
+          }
+          return routes[route] || NotFound
+        }
+      },
+      render(h) {
+        return h(this.ViewComponent)
+      }
+    })
+  </script>
+</html>

@@ -1,0 +1,30 @@
+<html>
+  <head>
+    <meta charset="utf8" />
+    <script src="dist/vue.js"></script>
+  </head>
+  <body>
+    Vue实例中的ref是在mounted函数中才有的
+    <div id="app">{{ msg }} <span ref="haha" @click="$event.target.innerHTML+='a'">haha</span></div>
+  </body>
+  <script>
+    var vm = new Vue({
+      el: "#app",
+      data: {
+        mounted: false
+      },
+      computed: {
+        msg() {
+          if (!this.mounted) return "not ready"
+          else return this.$refs.haha.innerHTML
+        }
+      },
+      mounted() {
+        Vue.nextTick(() => {
+          console.log(this.$refs.haha.innerHTML)
+          this.mounted = true
+        })
+      }
+    })
+  </script>
+</html>

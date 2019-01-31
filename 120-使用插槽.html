@@ -1,0 +1,38 @@
+<html>
+  <head>
+    <meta charset="utf8" />
+    <script src="dist/vue.js"></script>
+    <script src="dist/vue-router.js"></script>
+    <script src="dist/vuex.min.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <my-vue>
+        <!-- 具名插槽 -->
+        <span slot="header">this is header</span>
+        <!-- 默认插槽 -->
+        <span>this is body</span>
+        <template slot="footer">
+          this is footer
+        </template>
+      </my-vue>
+    </div>
+  </body>
+  <script type="x-template" id="temp">
+    <div>
+       header: <slot name="header"></slot><br>
+        body:<slot></slot><br>
+        footer:<slot name="footer"></slot><br>
+    </div>
+  </script>
+  <script>
+    new Vue({
+      el: "#app",
+      components: {
+        MyVue: {
+          template: "#temp"
+        }
+      }
+    })
+  </script>
+</html>

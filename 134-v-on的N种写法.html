@@ -1,0 +1,56 @@
+<html>
+  <head>
+    <meta charset="utf8" />
+    <script src="dist/vue.js"></script>
+    <style>
+      * {
+        font-size: 30px;
+        user-select: none;
+      }
+      span {
+        background: purple;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      第一种方式：v-on:事件名 <span v-on:click="clickHandler">{{ count1 == 0 ? "点我试试" : "你点我" + count1 + "下了" }}</span> <br />
+      第二种方式：使用简写‘@事件名’： <span @click="clickHandler">{{ count1 == 0 ? "点我试试" : "你点我" + count1 + "下了" }}</span> <br />
+      第三种方式：使用v-on字典 <span v-on="bindEventList">{{ count1 == 0 ? "点我试试" : "你点我" + count1 + "下了" }}</span> <button @click="shouldBind=!shouldBind">ToggleEvent</button> <br />
+      第四种方式：使用$on(事件名,handler)手动绑定<span ref="haha">{{ count1 == 0 ? "点我试试" : "你点我" + count1 + "下了" }}</span
+      ><br />
+    </div>
+  </body>
+  <script>
+    new Vue({
+      el: "#app",
+      data: {
+        count1: 0,
+        bindEvents: null,
+        shouldBind: false
+      },
+      computed: {
+        bindEventList() {
+          if (this.shouldBind) return this.bindEvents
+          else return {}
+        }
+      },
+      mounted() {
+        this.bindEvents = {
+          click: this.clickHandler
+        }
+        //使用$on监听子组件发送来的消息
+        this.$on("click", this.clickHandler)
+        this.$refs.haha.addEventListener("click", () => {
+          this.$emit("click")
+        })
+      },
+      methods: {
+        clickHandler() {
+          this.count1++
+        }
+      }
+    })
+  </script>
+</html>

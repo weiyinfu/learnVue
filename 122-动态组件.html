@@ -1,0 +1,27 @@
+<html>
+  <head>
+    <meta charset="utf8" />
+    <script src="dist/vue.js"></script>
+    <script src="dist/vue-router.js"></script>
+    <script src="dist/vuex.min.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <input type="radio" v-model="which" value="one" />one <input type="radio" v-model="which" value="two" /> two<input type="radio" v-model="which" value="three" />three <br />
+      <keep-alive> <component :is="which"></component> </keep-alive>
+    </div>
+  </body>
+  <script>
+    new Vue({
+      el: "#app",
+      components: {
+        one: { template: "<input placeholder='one'/>" },
+        two: { template: "<input placeholder='two'/>" },
+        three: { template: "<input placeholder='three'/>" }
+      },
+      data: {
+        which: "one"
+      }
+    })
+  </script>
+</html>

@@ -1,0 +1,39 @@
+<html>
+  <head>
+    <meta charset="utf8" />
+    <script src="dist/vue.js"></script>
+    <script src="dist/vue-router.js"></script>
+    <script src="dist/vuex.min.js"></script>
+  </head>
+  <body>
+    <div id="app"><span v-local-directive:ha.ha.ba="'local'">one</span> <span v-global-directive:ha.ha.ba="'global'">two</span></div>
+  </body>
+  <script>
+    Vue.directive("global-directive", {
+      bind(el, binding, vnode, oldVnode) {
+        console.log("bind")
+        console.log(binding)
+      },
+      inserted(el, binding, vnode, oldVnode) {
+        console.log("inserted")
+        el.innerHTML = "global-directive"
+      },
+      update(el, binding, vnode, oldVnode) {
+        console.log("update")
+      },
+      componentUpdated(el, binding, vnode, oldVnode) {},
+      unbind(el, binding, vnode, oldVnode) {}
+    })
+   var vm= new Vue({
+      directives: {
+        "local-directive": {
+          inserted(el) {
+            el.innerHTML = "local-directive"
+          }
+        }
+      }
+    }).$mount("#app")
+    //使用如下方式获取全局指令
+    console.log(Vue.directive("global-directive"))
+  </script>
+</html>

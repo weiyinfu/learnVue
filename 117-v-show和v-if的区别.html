@@ -1,0 +1,20 @@
+<html>
+  <head>
+    <meta charset="utf8" />
+    <script src="dist/vue.js"></script>
+    <script src="dist/vue-router.js"></script>
+    <script src="dist/vuex.min.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <span>打开控制台，可以发现，v-show设置display=none；v-if直接让元素消失</span> <br />
+      <span v-show="flag">v-show</span> <br /><span v-if="flag">v-if</span> <br />
+      <input type="checkbox" v-model="flag" />
+    </div>
+  </body>
+  <script>
+    var vm = new Vue({
+      data: { flag: false }
+    }).$mount("#app")
+  </script>
+</html>

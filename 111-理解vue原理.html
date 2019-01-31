@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <meta charset="utf8">
+      <script src="dist/vue.js"></script>
+      <script src="dist/vue-router.js"></script>
+      <script src="dist/vuex.min.js"></script>
+    </head>
+  <body>
+    <input id="app" />
+  </body>
+  <script>
+    var ele = document.querySelector("#app")
+    var data = {
+      RealValue: "haha"
+    }
+    Object.defineProperty(data, "value", {
+      get() {
+        return data.RealValue
+      },
+      set(value) {
+        data.RealValue = value
+        ele.value = value
+      }
+    })
+    ele.onchange = event => {
+      data.value = ele.value
+    }
+  </script>
+</html>

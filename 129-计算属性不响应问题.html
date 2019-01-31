@@ -1,0 +1,40 @@
+<html>
+  <head>
+    <meta charset="utf8" />
+    <script src="dist/vue.js"></script>
+  </head>
+  <body>
+    <h1>在计算属性中不能使用$refs</h1>
+    <h1>
+      <ul>
+        <li>计算属性在created阶段之后mounted之前执行。</li>
+        <li>$refs的项在mounted之后才存在。</li>
+      </ul>
+    </h1>
+    <div id="app">
+      <span v-for="x in ar" ref="haha">{{ x }}&nbsp;</span><br />
+      <button @click="a.push(a.length+1)">添加元素</button> <span>{{ hahaText }}</span>
+    </div>
+  </body>
+  <script>
+    var vm = new Vue({
+      el: "#app",
+      computed: {
+        ar() {
+          if (this.a == null) return []
+          return [...this.a]
+        },
+        hahaText() {
+          if (!this.$refs.haha) return "注意此处只在第一次时进行了渲染"
+          return this.$refs.haha.innerHTML
+        }
+      },
+      data: {
+        a: null
+      },
+      mounted() {
+        this.a = [1, 2, 3]
+      }
+    })
+  </script>
+</html>

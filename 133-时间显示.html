@@ -1,0 +1,125 @@
+<html>
+  <head>
+    <meta charset="utf8" />
+    <script src="dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="app"><input style="width:100%" type="range" :min="min" :max="max" v-model="value" /> <br />{{ tos }}<br />{{ real }}</div>
+  </body>
+  <script>
+    //将时间转为可读性较好的字符串
+    function time2string(t) {
+      var d = new Date()
+      d.setTime(t)
+      var now = new Date()
+      var hour = 3600 * 1000
+      function sameDay() {
+        if (now.getTime() - d.getTime() < 1000 * 5 * 60) {
+          return "刚刚"
+        }
+        return `${d.getHours()}时${d.getMinutes()}分`
+      }
+      function yesterday() {
+        return `昨天${d.getHours()}时${d.getMinutes()}分`
+      }
+      function lastYesterDay() {
+        return `前天${d.getHours()}时${d.getMinutes()}分`
+      }
+      function thisWeek() {
+        return `周${"日一二三四五六"[d.getDay()]}${d.getHours()}时`
+      }
+      function lastWeek() {
+        return `上周${"日一二三四五六"[d.getDay()]}${d.getHours()}时`
+      }
+      function thisMonth() {
+        return `${d.getDate()}日${d.getHours()}时`
+      }
+      function thisYear() {
+        return `${d.getMonth() + 1}月${d.getDate()}日`
+      }
+      function lastYear() {
+        return `去年${d.getMonth() + 1}月${d.getDate()}日`
+      }
+      function common() {
+        return `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日`
+      }
+      function getTodayBeg() {
+        var todayBeg = new Date()
+        todayBeg.setHours(0)
+        todayBeg.setMinutes(0)
+        todayBeg.setMilliseconds(0)
+        todayBeg.setSeconds(0)
+        return todayBeg
+      }
+      function getWeekBeg() {
+        var ans = getTodayBeg()
+        ans.setTime(ans.getTime() - ans.getDay() * 24 * hour)
+        return ans
+      }
+      function getMonthBeg() {
+        var ans = getTodayBeg()
+        ans.setTime(ans.getTime() - ans.getDate() * 24 * hour)
+        return ans
+      }
+      function getYearBeg() {
+        var ans = getTodayBeg()
+        ans.setMonth(0)
+        ans.setDate(0)
+        return ans
+      }
+      function getLastYearBeg() {
+        var ans = getYearBeg()
+        ans.setFullYear(ans.getFullYear() - 1)
+        return ans
+      }
+      var todayBeg = getTodayBeg()
+
+      if (d.getTime() > todayBeg.getTime()) {
+        return sameDay()
+      } else if (todayBeg.getTime() - d.getTime() < 48 * hour) {
+        return yesterday()
+      } else if (todayBeg.getTime() - d.getTime() < 72 * hour) {
+        return lastYesterDay()
+      }
+      var weekBeg = getWeekBeg()
+      if (weekBeg.getTime() < d.getTime()) {
+        return thisWeek()
+      }
+      if (weekBeg.getTime() - 7 * 24 * hour < d.getTime()) {
+        return lastWeek()
+      }
+      var monthBeg = getMonthBeg()
+      if (monthBeg.getTime() < d.getTime()) {
+        return thisMonth()
+      }
+      var yearBeg = getYearBeg()
+      if (yearBeg.getTime() < d.getTime()) {
+        return thisYear()
+      }
+      if (d.getTime() > getLastYearBeg()) {
+        return lastYear()
+      }
+      return common()
+    }
+    new Vue({
+      el: "#app",
+      data: {
+        max: new Date().getTime(),
+        value: new Date().getTime(),
+        min: new Date().getTime() - 1000 * 365 * 24 * 3600
+      },
+      computed: {
+        tos() {
+          var d = new Date()
+          d.setTime(this.value)
+          return time2string(d)
+        },
+        real() {
+          var d = new Date()
+          d.setTime(this.value)
+          return d
+        }
+      }
+    })
+  </script>
+</html>

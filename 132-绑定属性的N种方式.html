@@ -1,0 +1,57 @@
+<html>
+  <head>
+    <meta charset="utf8" />
+    <script src="dist/vue.js"></script>
+    <style>
+      * {
+        font-size: 30px;
+        font-family: 微软雅黑;
+      }
+      .style1 {
+        color: blue;
+      }
+      .style2 {
+        background: blanchedalmond;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <h3>bind的三种写法</h3>
+      <span v-bind:title="'我是老大'">鼠标悬浮我</span><br />
+      <span :title="'我是老二'">鼠标悬浮我</span><br />
+      <span v-bind="bindData">鼠标悬浮我</span><br />
+      class和style比较特殊，体现在：原生style和绑定的style会进行合并而不是覆盖<br />
+      <br />
+      绑定class和style有三种方式：字符串、数组、对象。 <br />
+      <h3>绑定style</h3>
+      <ol>
+        <li><span :style="'font-size:40px'" style="color:red;">1、使用字符串绑定style</span></li>
+        <li><span :style="{'font-size':'40px'}" style="color:red;">2、使用对象绑定style</span></li>
+        <li><span :style="[{'font-size':'40px'},{'background':'yellow'}]" style="color:red;">3、使用数组绑定style</span></li>
+      </ol>
+      <h3>绑定class</h3>
+      <ol>
+        <li><span :class="'style1'">使用字符串绑定class</span></li>
+        <li><span :class="['style1','style2']">使用数组绑定class</span></li>
+        <li><span :class="{style2:true,style1:true}">使用对象绑定class</span></li>
+      </ol>
+      <h3>一切都在JS中写:v-bind是一个属性，它的值可以取js</h3>
+      <span v-bind="bind" :title="'悬浮我干啥'">大一统的JS</span>
+    </div>
+  </body>
+  <script>
+    new Vue({
+      el: "#app",
+      data: {
+        bindData: {
+          title: "我是老三"
+        },
+        bind: {
+          class: ["style1", "style2"],
+          style: { "border-style": "solid", "border-color": "purple" }
+        }
+      }
+    })
+  </script>
+</html>
