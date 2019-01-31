@@ -1,4 +1,3 @@
 *.iml
 .vscode/
-.idea/
-dist/
+.idea/ 
